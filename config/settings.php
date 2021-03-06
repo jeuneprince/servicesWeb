@@ -53,5 +53,27 @@ $settings['db'] = [
     ],
 ];
 
+// Logger settings
+$settings['logger'] = [
+    'name' => 'app',
+    'path' => __DIR__ . '/../logs',
+    'filename' => 'app.log',
+    'level' => \Monolog\Logger::DEBUG,
+    'file_permission' => 0775,
+];
+
+// Twig settings
+$settings['twig'] = [
+    'paths' =>[ __DIR__ . '/../templates',
+    ],
+    // twig environment options
+    'options' => [
+        //should be set to true in production
+        'cache_enabled' => false,
+        'cache_path' => __DIR__ . '/../tmp/twig',
+        ],
+];
+
+
 
 return $settings;

@@ -5,6 +5,11 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Selective\BasePath\BasePathMiddleware;
+use App\Factory\LoggerFactory;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
+
+
 
 return [
     'settings' => function () {
@@ -47,6 +52,24 @@ return [
     
         return new PDO($dsn, $username, $password, $flags);
     },
-    
 
+    LoggerFactory::class => function (ContainerInterface $container) {
+        return new LoggerFactory($container->get('settings')['logger']);
+    },
+
+    // twig templates
+        Twig::class=>function(containerInterface $container){
+            $settings = $container->get('settings');
+            $twigSettings = $settings['twig'];
+            $options = $twigSettings['options'];
+            $options['cache'] = $options['cache_enabled'] ? $options['cache_path']: false;
+            $twig = Twig::create($twigSettings['paths'], $options);
+            return $twig;
+        },
+        TwigMiddleware::class=>function(containerInterface $container){
+            return TwigMiddleware::createFromContainer(
+                $container->get(app::class),
+                twig::class
+            );
+        },
 ];

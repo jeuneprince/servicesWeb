@@ -35,6 +35,7 @@ class UserCreatorRepository
     {
         $row = [
             'username' => $user['username'],
+            'password' => $user['password'],
             'first_name' => $user['first_name'],
             'last_name' => $user['last_name'],
             'email' => $user['email'],
@@ -42,6 +43,7 @@ class UserCreatorRepository
 
         $sql = "INSERT INTO users SET 
                 username=:username, 
+                password=:password, 
                 first_name=:first_name, 
                 last_name=:last_name, 
                 email=:email;";
